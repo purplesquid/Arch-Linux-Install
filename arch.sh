@@ -102,14 +102,14 @@ baseinstall(){
             "Quit")
                 exit 1;;
             *) echo "invalid option";;
-            
         esac
+    done
     
     echo -e "Generating fstab file\n"
     genfstab -U /mnt >> /mnt/etc/fstab
     
     echo "Chrooting into new system"
-    chrootsystem | arch-chroot /mnt /bin/bash
+    arch-chroot /mnt /bin/bash | chrootsystem
 }
 
 timezonesort(){
