@@ -1,20 +1,20 @@
 #!/bin/bash
 
 #Arch x86-64 Install Instructions
-#curl -L https://github.com/purplesquid/Arch-Linux-Install/tarball/master | tar xz
-#sh arch.sh
+#1) curl -L https://github.com/purplesquid/Arch-Linux-Install/tarball/master | tar xz
+#2) sh arch.sh
+#3) after arch.sh completes copy chroot.sh to /mnt/root
+#4) go into chroot using arch-chroot /mnt 
+#5) run chroot.sh from the /mnt/root directory
 
-internetCheck(){
-    if ping -c 1 www.google.com &> /dev/null
-    then
-        echo "Internet: Connected"
-        partitions
-    else
-        echo
-        echo -e "Attempting to gain network connection...\n"
-        connect
-    fi
-}
+if ping -c 1 www.google.com &> /dev/null
+then
+    partitions
+else
+    echo
+    echo -e "Attempting to gain network connection...\n"
+    connect
+fi
 
 connect(){
     PS3='Please enter a number or 3 to quit: '
@@ -107,7 +107,7 @@ baseinstall(){
     
     #Generate fstab
     genfstab -U /mnt >> /mnt/etc/fstab
-    
-    arch-chroot /mnt /bin/bash
+
+    echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, 
+            and run chroot.sh\n"
 }
-internetCheck

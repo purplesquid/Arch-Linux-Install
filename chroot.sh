@@ -36,12 +36,11 @@ chrootsystem(){
     
     #Create locale
     sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
-    arch-chroot /mnt locale-gen
+    locale-gen
         
     read -rp "Enter in the hostname of the computer (e.g archlinuxpc)" host
     echo $host > /etc/hostname
     
-    arch-chroot /mnt /bin/bash
     echo -e "Creating initial ramdisk environment and setting up kernel modules for init\n"
     mkinitcpio -p linux 
     
@@ -53,24 +52,24 @@ chrootsystem(){
     do
         case $opt in
             "Grub")
-                pacman -S grub os-prober
+                echo -ne "y" | pacman -S grub os-prober 
                 grub-install --target=x86_64-pc /dev/sda
                 grub-mkconfig -o /boot/grub/grub.cfg
                 break;;     
             "Syslinux")
-                pacman -S syslinux gptfdisk 
+                echo -ne "y" | pacman -S syslinux gptfdisk 
                 syslinux-install_update -i -a -m
-                read -rsp $'Add the root partition number after /dev/. For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
+                echo
+                read -rsp $'Add the root partition number after /dev/. 
+                echo "\n For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
                 nano /boot/syslinux/syslinux.cfg
                 break;;
         *) echo "invalid option";;
         esac
     done
     
-    read -rsp $'Press any key to exit the chroot environment and reboot...\n' -n1 key
-    
     exit
     unmount -R /mnt
     reboot  
 }
-
+chrootsystem
