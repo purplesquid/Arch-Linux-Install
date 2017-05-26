@@ -99,7 +99,7 @@ baseinstall(){
     genfstab -U /mnt >> /mnt/etc/fstab
     
     echo "Chrooting into new system"
-    #echo -e "\n" | arch-chroot /mnt /bin/bash | chrootsystem
+    echo -e "\n" | arch-chroot /mnt /bin/bash | chrootsystem
     #chrootsystem | arch-chroot /mnt /bin/bash
     chrootsystem
 }
@@ -162,7 +162,7 @@ chrootsystem(){
             pacman -S syslinux gptfdisk 
             syslinux-install_update -i -a -m
             read -rsp $'Add the root partition number after /dev/. For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
-#            nano /boot/syslinux/syslinux.cfg
+            nano /boot/syslinux/syslinux.cfg
             break;;
     *) echo "invalid option";;
     esac
