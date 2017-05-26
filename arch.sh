@@ -120,7 +120,6 @@ timezonesort(){
 }
 
 chrootsystem(){
-    arch-chroot /mnt /bin/bash
     PS3='Enter the area you are located: '
     options=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
     select opt in "${options[@]}"
@@ -155,6 +154,8 @@ chrootsystem(){
     read -rp "Enter in the hostname of the computer (e.g archlinuxpc)" host
     echo $host > /etc/hostname
     
+    
+    arch-chroot /mnt /bin/bash
     echo -e "Creating initial ramdisk environment and setting up kernel modules for init\n"
     arch -chroot mkinitcpio -p linux 
     
@@ -167,7 +168,7 @@ chrootsystem(){
         case $opt in
             "Grub")
                 pacman -S grub os-prober
-                grub-install -target=x86_64-pc /dev/sda
+                grub-install --target=x86_64-pc /dev/sda
                 grub-mkconfig -o /boot/grub/grub.cfg
                 break;;     
             "Syslinux")
