@@ -1,11 +1,13 @@
 #!/bin/bash
-#Arch x86-64 Install
-#curl -L https://github.com/username/repository name/tarball/development | tar xz
+
+#Arch x86-64 Install Instructions
+#curl -L https://github.com/purplesquid/Arch-Linux-Install/tarball/master | tar xz
+#sh arch.sh
 
 internetCheck(){
-    if ping -c 2 www.google.com &> /dev/null
+    if ping -c 1 www.google.com &> /dev/null
     then
-        echo "Internet: OK"
+        echo "Internet: Connected"
         partitions
     else
         echo
@@ -85,23 +87,29 @@ partitions(){
 baseinstall(){
     #installing base package
     echo
-    read -rp  "Do you want to install the base-devel pacakges? [y/n] ?" base
-    
-    if [[ $base =~ [yY](es)* ]] 
-    then   
-        #hits enter twice to install base packages
-        echo -ne "\n\n y" | pacstrap -i /mnt base base-devel
-    else
-        echo -ne "\n\n y" | pacstrap -i /mnt base 
-    fi
+    read -rp  "Do you want to install base and base-devel packages? [y/n]? " base
+
+    PS3='Please enter a number to install packages or 3 to quit: '
+    connections=("Base" "Base and devel" "Quit")
+    select opt in "${connections[@]}"
+    do
+        case $opt in 
+            "Base")
+                #hits enter twice to install base packages
+                echo -ne "\n\n y" | pacstrap -i /mnt base base-devel;;
+            "Base and devel")
+                echo -ne "\n\n y" | pacstrap -i /mnt base;;
+            "Quit")
+                exit 1;;
+            *) echo "invalid option";;
+            
+        esac
     
     echo -e "Generating fstab file\n"
     genfstab -U /mnt >> /mnt/etc/fstab
     
     echo "Chrooting into new system"
-    echo -e "\n" | arch-chroot /mnt /bin/bash | chrootsystem
-    #chrootsystem | arch-chroot /mnt /bin/bash
-    chrootsystem
+    chrootsystem | arch-chroot /mnt /bin/bash
 }
 
 timezonesort(){
@@ -148,7 +156,7 @@ chrootsystem(){
     
     read -rsp $'Press any key to set the root passwd...\n' -n1 key
     passwd
-    PS3='Enter the boot loader to install\n'
+    PS3='Enter the boot loader to install: '
     options=("Grub" "Syslinux")
     select opt in "${options[@]}"
     do
