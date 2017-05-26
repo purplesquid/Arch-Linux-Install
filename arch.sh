@@ -105,11 +105,10 @@ baseinstall(){
         esac
     done
     
-    echo -e "Generating fstab file\n"
+    #Generate fstab
     genfstab -U /mnt >> /mnt/etc/fstab
     
-    echo "Chrooting into new system"
-    arch-chroot /mnt /bin/bash | chrootsystem
+    chrootsystem
 }
 
 timezonesort(){
@@ -121,6 +120,7 @@ timezonesort(){
 }
 
 chrootsystem(){
+    arch-chroot /mnt /bin/bash
     PS3='Enter the area you are located: '
     options=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
     select opt in "${options[@]}"
@@ -147,12 +147,16 @@ chrootsystem(){
         *) echo "invalid option";;
         esac
     done
+    
+    #Create locale
+    sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
+    arch-chroot /mnt locale-gen
         
     read -rp "Enter in the hostname of the computer (e.g archlinuxpc)" host
     echo $host > /etc/hostname
     
     echo -e "Creating initial ramdisk environment and setting up kernel modules for init\n"
-    mkinitcpio -p linux 
+    arch -chroot mkinitcpio -p linux 
     
     read -rsp $'Press any key to set the root passwd...\n' -n1 key
     passwd
