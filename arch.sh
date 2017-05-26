@@ -87,8 +87,6 @@ partitions(){
 baseinstall(){
     #installing base package
     echo
-    read -rp  "Do you want to install base and base-devel packages? [y/n]? " base
-
     PS3='Please enter a number to install packages or 3 to quit: '
     connections=("Base" "Base and devel" "Quit")
     select opt in "${connections[@]}"
@@ -96,9 +94,11 @@ baseinstall(){
         case $opt in 
             "Base")
                 #hits enter twice to install base packages
-                echo -ne "\n\n y" | pacstrap -i /mnt base base-devel;;
+                echo -ne "\n\n y" | pacstrap -i /mnt base base-devel
+                break;;
             "Base and devel")
-                echo -ne "\n\n y" | pacstrap -i /mnt base;;
+                echo -ne "\n\n y" | pacstrap -i /mnt base
+                break;;
             "Quit")
                 exit 1;;
             *) echo "invalid option";;
@@ -125,27 +125,27 @@ chrootsystem(){
     options=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
     select opt in "${options[@]}"
     do
-    case $opt in
-    "$opt")
-        timezonesort $opt
-        break;;
-    *) echo "invalid option";;
-    esac
+        case $opt in
+            "$opt")
+            timezonesort $opt
+            break;;
+            *) echo "invalid option";;
+        esac
     done
     
     PS3='Enter a number for your time standard: '
     timestandard=("localtime" "UTC")
     select reply in "${timestandard[@]}"
     do
-    case $reply in
-        "localtime")
-            hwclock --systohc --localtime
-            break;;     
-        "UTC")
-            hwclock --systohc --utc
-            break;;
-    *) echo "invalid option";;
-    esac
+        case $reply in
+            "localtime")
+                hwclock --systohc --localtime
+                break;;     
+            "UTC")
+                hwclock --systohc --utc
+                break;;
+        *) echo "invalid option";;
+        esac
     done
         
     read -rp "Enter in the hostname of the computer (e.g archlinuxpc)" host
@@ -160,20 +160,20 @@ chrootsystem(){
     options=("Grub" "Syslinux")
     select opt in "${options[@]}"
     do
-    case $opt in
-        "Grub")
-            pacman -S grub os-prober
-            grub-install -target=x86_64-pc /dev/sda
-            grub-mkconfig -o /boot/grub/grub.cfg
-            break;;     
-        "Syslinux")
-            pacman -S syslinux gptfdisk 
-            syslinux-install_update -i -a -m
-            read -rsp $'Add the root partition number after /dev/. For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
-            nano /boot/syslinux/syslinux.cfg
-            break;;
-    *) echo "invalid option";;
-    esac
+        case $opt in
+            "Grub")
+                pacman -S grub os-prober
+                grub-install -target=x86_64-pc /dev/sda
+                grub-mkconfig -o /boot/grub/grub.cfg
+                break;;     
+            "Syslinux")
+                pacman -S syslinux gptfdisk 
+                syslinux-install_update -i -a -m
+                read -rsp $'Add the root partition number after /dev/. For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
+                nano /boot/syslinux/syslinux.cfg
+                break;;
+        *) echo "invalid option";;
+        esac
     done
     
     read -rsp $'Press any key to exit the chroot environment and reboot...\n' -n1 key
