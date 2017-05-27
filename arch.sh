@@ -47,7 +47,6 @@ connect(){
 
 partitions(){
     cfdisk /dev/sda
-    lsblk /dev/sda
     read -rp "Do you have a swap partition? [y/n] " swap
 
     if [[ $swap =~ [yY](es)* ]]
@@ -81,7 +80,7 @@ partitions(){
         then
             baseinstall
         else
-                partitions
+            partitions
         fi
     fi
 }
@@ -96,10 +95,10 @@ baseinstall(){
         case $opt in 
             "Base")
                 #hits enter twice to install base packages
-                echo -ne "\n\n y" | pacstrap -i /mnt base base-devel
+                echo -ne "\n\n y" | pacstrap -i /mnt base
                 break;;
             "Base and devel")
-                echo -ne "\n\n y" | pacstrap -i /mnt base
+                echo -ne "\n\n y" | pacstrap -i /mnt base base-devel
                 break;;
             "Quit")
                 exit 1;;
@@ -110,7 +109,6 @@ baseinstall(){
     #Generate fstab
     genfstab -U /mnt >> /mnt/etc/fstab
 
-    echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, 
-            and run chroot.sh\n"
+    echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, and run chroot.sh\n"
 }
 internetCheck
