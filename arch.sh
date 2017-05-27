@@ -7,14 +7,16 @@
 #4) go into chroot using arch-chroot /mnt 
 #5) run chroot.sh from the /mnt/root directory
 
-if ping -c 1 www.google.com &> /dev/null
-then
-    partitions
-else
-    echo
-    echo -e "Attempting to gain network connection...\n"
-    connect
-fi
+internetCheck(){
+    if ping -c 1 www.google.com &> /dev/null
+    then
+        partitions
+    else
+        echo
+        echo -e "Attempting to gain network connection...\n"
+        connect
+    fi
+}
 
 connect(){
     PS3='Please enter a number or 3 to quit: '
@@ -111,3 +113,4 @@ baseinstall(){
     echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, 
             and run chroot.sh\n"
 }
+internetCheck
