@@ -20,11 +20,13 @@ chrootsystem(){
     echo -e "Creating initial ramdisk environment and setting up kernel modules for init\n"
     mkinitcpio -p linux 
     
+    echo
     read -rsp $'Press any key to set the root passwd...\n' -n1 key
     passwd
+    echo
     
     read -rsp $'Press any key to install the Syslinux bootloader...\n' -n1 key
-    echo -ne "y" | pacman -S syslinux 
+    echo -ne "y" | pacman -S syslinux gptfdisk
     syslinux-install_update -i -a -m
     echo
     read -rsp $'Add the root partition number after /dev/. 
