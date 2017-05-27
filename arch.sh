@@ -85,6 +85,14 @@ partitions(){
     fi
 }
 
+timezonesort(){
+    timesort="timedatectl list-timezones"
+    printf "%-20s%-20s%-20s%s\n" $($timesort | grep -o "$1.*" | cut -f2- -d'/')
+    read -rp "Please enter a city: " city
+    
+    ln -sf /usr/share/zoneinfo/$1/$city /etc/localtime
+}
+
 baseinstall(){
     #installing base package
     echo
@@ -108,7 +116,23 @@ baseinstall(){
     
     #Generate fstab
     genfstab -U /mnt >> /mnt/etc/fstab
-
+    
+    PS3='Enter the area you are located: '
+    options=("Africa" "America" "Antarctica" "Asia" "Atlantic" "Australia" "Europe" "Indian" "Pacific")
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "$opt")
+            timezonesort $opt
+            break;;
+            *) echo "invalid option";;
+        esac
+    done
+    
+    #Create locale
+    sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
+    locale-gen
+    
     echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, and run chroot.sh\n"
-}
+ }
 internetCheck
