@@ -56,11 +56,12 @@ partitions(){
         
         read swappartition
         mkswap /dev/sda${swappartition} && swapon /dev/sda${swappartition}
+        echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${swappartition}
     else
         echo
         read -rp "Which partition number is root? " rootpartition
         read -rp "Which partition number is home? " home
-        echo "y" | (mkfs.ext4 /dev/sda${rootpartition} && mkfs.ext4 /dev/sda${home})
+        echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
         
         mount /dev/sda$rootpartition /mnt
         mkdir -p /mnt/home
