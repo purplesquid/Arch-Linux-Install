@@ -24,13 +24,15 @@ chrootsystem(){
     read -rsp $'Press any key to set the root passwd...\n' -n1 key
     passwd
     echo
-    
     read -rsp $'Press any key to install the Syslinux bootloader...\n' -n1 key
     echo -ne "y" | pacman -S syslinux gptfdisk
     syslinux-install_update -i -a -m
     echo
-    read -rsp $'Add the root partition number after /dev/. 
-    echo "\n For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
+    lsblk /dev/sda
+    read -rsp $'Add the root partition number after /dev/'
+    echo -e "\n For example -->  LABEL arch  APPEND root=/dev/"rootpartition number goes here" rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
     nano /boot/syslinux/syslinux.cfg 
+    exit
+    read -rsp $'Press any key to reboot the system and launch Arch Linux!' -n1 key
 }
 chrootsystem
