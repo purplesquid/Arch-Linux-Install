@@ -56,7 +56,7 @@ partitions(){
         
         read swappartition
         mkswap /dev/sda${swappartition} && swapon /dev/sda${swappartition}
-        echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${swappartition}
+        echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${swappartition})
     else
         echo
         read -rp "Which partition number is root? " rootpartition
