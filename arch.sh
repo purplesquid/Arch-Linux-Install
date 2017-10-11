@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#Arch x86-64 Install Instructions
-#1) curl -L https://github.com/purplesquid/Arch-Linux-Install/tarball/master | tar xz
-#2) sh arch.sh
-#3) after arch.sh completes copy chroot.sh to /mnt/root
-#4) go into chroot using arch-chroot /mnt 
-#5) run chroot.sh from the /mnt/root directory
+# Arch-Linux-Install instructions
+#1) curl -L https://github.com/purplesquid/ArchLinux/tarball/master | tar xz
+#2) Move to newly created folder and run sh arch.sh
+#3) After arch.sh completes type: mv chroot.sh /mnt/root
+#4) arch-chroot /mnt 
+#5) cd /root
+#6) sh chroot.sh
 
 internetCheck(){
     if ping -c 1 www.google.com &> /dev/null
