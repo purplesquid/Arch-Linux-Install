@@ -2,7 +2,7 @@
 
 1) curl -L https://github.com/purplesquid/ArchLinux/tarball/master | tar xz
 
-2) Run sh arch.sh from created folder
+2) Run sh arch.sh from created folder (purplesquid-ArchLinux-...)
 
 3) After arch.sh completes: mv chroot.sh /mnt/root
 
