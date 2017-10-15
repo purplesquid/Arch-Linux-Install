@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Arch-Linux-Install instructions
-#1) curl -L https://github.com/purplesquid/ArchLinux/tarball/master | tar xz
-#2) Move to newly created folder and run sh arch.sh
-#3) After arch.sh completes type: mv chroot.sh /mnt/root
-#4) arch-chroot /mnt 
-#5) cd /root
-#6) sh chroot.sh
-
 internetCheck(){
     if ping -c 1 www.google.com &> /dev/null
     then
@@ -104,7 +96,7 @@ baseinstall(){
     do
         case $opt in 
             "Base")
-                #hits enter twice to install base packages
+                #hits enter twice and enters "y" to install base packages
                 echo -ne "\n\n y" | pacstrap -i /mnt base
                 break;;
             "Base and devel")
@@ -135,6 +127,6 @@ baseinstall(){
     sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
     locale-gen
     
-    echo -e "Now move chroot.sh to /mnt/root directory, change root (chroot) using arch-chroot /mnt, and run chroot.sh\n"
+    echo -ne "1) mv chroot.sh /mnt/root \n 2) arch-chroot /mnt \n 3) cd /root \n 4) sh chroot.sh\n"
  }
 internetCheck
