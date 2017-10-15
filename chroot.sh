@@ -25,26 +25,21 @@ chrootsystem(){
     passwd
     echo
     
-    PS3='Enter a number to install Grub or Syslinux: '
-    timestandard=("Grub" "Syslinux")
+    PS3='Enter 1 to install Syslinux or another key to install different boot loader: '
+    timestandard=("Syslinux")
     select reply in "${timestandard[@]}"
     do
-        case $reply in
-            "Grub")
-                echo -e "y" | pacman -S grub efibootmgr
-                grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
-                grub-mkconfig -o /boot/grub/grub.cfg
-                break;;     
+        case $reply in    
             "Syslinux")
                 echo -e "y" | pacman -S syslinux gptfdisk
                 syslinux-install_update -i -a -m
+                echo
+                lsblk /dev/sda
+                read -rsp $'Add the root partition number after /dev/   For example -->  LABEL arch  APPEND root=/dev/(ROOT PARTITION NUMBER GOES HERE) rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
+                nano /boot/syslinux/syslinux.cfg 
                 break;;
-        *) echo "invalid option";;
+        *) break;;
         esac
     done
-    echo
-    lsblk /dev/sda
-    read -rsp $'Add the root partition number after /dev/   For example -->  LABEL arch  APPEND root=/dev/ROOT PARTITION NUMBER GOES HERE rw. Once you hit a key, the terminal will automatically switch to the file...\n' -n1 key
-    nano /boot/syslinux/syslinux.cfg 
 }
 chrootsystem
