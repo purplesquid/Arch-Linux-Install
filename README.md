@@ -1,10 +1,10 @@
-# Arch-Linux-Install instructions
+# Arch Linux install instructions
 
 1) curl -L https://github.com/purplesquid/ArchLinux/tarball/master | tar xz
 
-2) Move to newly created folder and run sh arch.sh
+2) Run sh arch.sh from created folder
 
-3) After arch.sh completes type: mv chroot.sh /mnt/root
+3) After arch.sh completes: mv chroot.sh /mnt/root
 
 4) arch-chroot /mnt 
 
