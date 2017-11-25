@@ -8,6 +8,4 @@
 
 4) arch-chroot /mnt 
 
-5) cd /root
-
-6) sh chroot.sh
+5) sh /root/chroot.sh
