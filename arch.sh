@@ -127,6 +127,6 @@ baseinstall(){
     sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
     locale-gen
     
-    echo -ne "1) mv chroot.sh /mnt/root \n 2) arch-chroot /mnt \n 3) cd /root \n 4) sh chroot.sh\n"
+    echo -ne "1) mv chroot.sh /mnt/root \n 2) arch-chroot /mnt \n 3) sh /root/chroot.sh\n"
  }
 internetCheck
