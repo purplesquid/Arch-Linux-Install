@@ -2,6 +2,7 @@
 
 rootPartition=1
 homePartition=2
+country="America"
 city="New_York"
 
 internetCheck(){
@@ -56,12 +57,12 @@ partitions(){
 baseinstall(){
     #installing base package
     echo
-    #hits enter twice and enters "y" to install base and base-devel packages
-    echo -ne "\n\n y" | pacstrap -i /mnt base base-devel    
+    #Installs base and base-devel packages
+    pacstrap -i /mnt base base-devel --noconfirm 
     #Generate fstab
     genfstab -U /mnt >> /mnt/etc/fstab
     
-    ln -sf /usr/share/zoneinfo/$1/$city /etc/localtime
+    ln -sf /usr/share/zoneinfo/$country/$city /etc/localtime
     
     #Create locale
     sed -i 's/^#en_US\.UTF/en_US\.UTF/' /mnt/etc/locale.gen
