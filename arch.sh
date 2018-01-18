@@ -1,8 +1,8 @@
 #!/bin/bash
 
-rootPartition = 1
-homePartition = 2
-city = "New_York"
+rootPartition=1
+homePartition=2
+city="New_York"
 
 internetCheck(){
     if ping -c 1 www.google.com &> /dev/null
