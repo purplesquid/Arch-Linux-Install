@@ -1,6 +1,6 @@
 # Arch Linux install instructions
 
-1) curl -L https://github.com/purplesquid/ArchLinux/tarball/master | tar xz
+1) curl -L https://github.com/purplesquid/ArchLinux/tarball/Development | tar xz
 
 2) Run sh arch.sh from created folder (purplesquid-ArchLinux-...)
 
