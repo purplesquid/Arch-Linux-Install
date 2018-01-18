@@ -1,4 +1,4 @@
-hostName = "archpc"
+hostName="archpc"
 
 hwclock --systohc --localtime
 #Setting hostname
