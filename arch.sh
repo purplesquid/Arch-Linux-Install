@@ -45,13 +45,31 @@ connect(){
 
 partitions(){
     cfdisk /dev/sda
-    echo
-    echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootPartition} && mkfs.ext4 -O ^64bit /dev/sda${homePartition})
-    mount /dev/sda$rootPartition /mnt
+    
+    read -rp "Which partition number is root? " rootpartition
+    read -rp "Which partition number is home? " home
+    echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
+        
+    mount /dev/sda$rootpartition /mnt
     mkdir -p /mnt/home
-    mount /dev/sda$homePartition /mnt/home
-    sleep 2
-    baseinstall
+    mount /dev/sda$home /mnt/home
+        
+    lsblk /dev/sda 
+
+    #Verifies partitions are correct before continuing
+    echo
+    echo -e "The root partition should be labeled as /mnt\n"
+    echo -e "The home partition should be labeled as /mnt/home\n"
+    echo -e "The swap partition should be labeled as /swap\n"
+            
+    read -rp "Are you sure the partitions are correct? [y/n] " response
+        
+    if [[ $response =~ [yY](es)* ]]
+    then
+        baseinstall
+    else
+        partitions
+    fi
 }
 
 baseinstall(){
