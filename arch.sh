@@ -61,7 +61,7 @@ partitions(){
             read -rp "Which partition number is boot? " bootpartition
             echo
            
-            echo "y" | (mkfs.ext4 -O 64bit-O ^64bit /dev/sda${bootpartition})
+            echo "y" | (mkfs.ext4 -O 64bit /dev/sda${bootpartition})
             mount /dev/sda$bootpartition /boot
          fi
         
