@@ -37,14 +37,14 @@ connect(){
         fi
     done
 }   
-
+    
 partitions(){
     cfdisk /dev/sda
     read -rp "Do you have a swap partition? [y/n] " swap
 
     if [[ $swap =~ [yY](es)* ]]
     then
-        echo -e "What partition number is it? "
+        echo -e "What partition number is swap? "
         echo
         
         read swappartition
@@ -54,28 +54,39 @@ partitions(){
         echo
         read -rp "Which partition number is root? " rootpartition
         read -rp "Which partition number is home? " home
-        echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
         
-        mount /dev/sda$rootpartition /mnt
-        mkdir -p /mnt/home
-        mount /dev/sda$home /mnt/home
+        read -rp "Do you have a boot partition? [y/n] " boot
+        if [[ $boot =~ [yY](es)* ]]
+        then
+            echo -e "What partition number is boot? "
+            echo
+            
+            read bootpartition
+            echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${bootpartition}  
+         fi
         
-        lsblk /dev/sda 
+         echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
+        
+         mount /dev/sda$rootpartition /mnt
+         mkdir -p /mnt/home
+         mount /dev/sda$home /mnt/home
+        
+         lsblk /dev/sda 
 
-        #Verifies partitions are correct before continuing
-        echo
-        echo -e "The root partition should be labeled as /mnt\n"
+         #Verifies partitions are correct before continuing
+         echo
+         echo -e "The root partition should be labeled as /mnt\n"
             echo -e "The home partition should be labeled as /mnt/home\n"
             echo -e "The swap partition should be labeled as /swap\n"
             
-        read -rp "Are you sure the partitions are correct? [y/n] " response
+         read -rp "Are you sure the partitions are correct? [y/n] " response
         
-        if [[ $response =~ [yY](es)* ]]
-        then
+         if [[ $response =~ [yY](es)* ]]
+         then
             baseinstall
-        else
+         else
             partitions
-        fi
+         fi
     fi
 }
 
