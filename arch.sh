@@ -87,7 +87,7 @@ partitions(){
          else
             partitions
          fi
-    fi
+     fi
 }
 
 timezonesort(){
