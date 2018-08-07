@@ -58,10 +58,11 @@ partitions(){
         read -rp "Do you have a boot partition? [y/n] " boot
         if [[ $boot =~ [yY](es)* ]]
         then
-            read -rp "Which partition number is root? " bootpartition
+            read -rp "Which partition number is boot? " bootpartition
             echo
            
-            echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${bootpartition})
+            echo "y" | (mkfs.ext4 -O 64bit-O ^64bit /dev/sda${bootpartition})
+            mount /dev/sda$bootpartition /boot
          fi
         
          echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
@@ -75,8 +76,9 @@ partitions(){
          #Verifies partitions are correct before continuing
          echo
          echo -e "The root partition should be labeled as /mnt\n"
-            echo -e "The home partition should be labeled as /mnt/home\n"
-            echo -e "The swap partition should be labeled as /swap\n"
+         echo -e "The home partition should be labeled as /mnt/home\n"
+         echo -e "The swap partition should be labeled as /swap\n"
+         echo -e "The boot partition should be labeled as /boot\n"
             
          read -rp "Are you sure the partitions are correct? [y/n] " response
         
