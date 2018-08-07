@@ -58,11 +58,10 @@ partitions(){
         read -rp "Do you have a boot partition? [y/n] " boot
         if [[ $boot =~ [yY](es)* ]]
         then
-            echo -e "What partition number is boot? "
+            read -rp "Which partition number is root? " bootpartition
             echo
-            
-            read bootpartition
-            echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${bootpartition}  
+           
+            echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${bootpartition})
          fi
         
          echo "y" | (mkfs.ext4 -O ^64bit /dev/sda${rootpartition} && mkfs.ext4 -O ^64bit /dev/sda${home})
